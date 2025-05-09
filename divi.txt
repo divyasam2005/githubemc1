@@ -1,1 +1,64 @@
-divi.txt
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+
+# Load the dataset
+# Replace 'churn_data.csv' with your dataset file path
+data = pd.read_csv('churn_data.csv')
+
+# Quick data inspection
+print("Dataset Preview:")
+print(data.head())
+
+# Data preprocessing
+# Checking for missing values
+print("\nMissing Values:")
+print(data.isnull().sum())
+
+# Handle missing values (if any)
+data.fillna(method='ffill', inplace=True)
+
+# Encode categorical variables
+label_encoders = {}
+for column in data.select_dtypes(include=['object']).columns:
+    le = LabelEncoder()
+    data[column] = le.fit_transform(data[column])
+    label_encoders[column] = le
+
+# Splitting data into features and target
+X = data.drop('Churn', axis=1)  # Replace 'Churn' with your target column name
+y = data['Churn']
+
+# Normalize the feature data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Model training
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Model evaluation
+y_pred = model.predict(X_test)
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred))
+
+print("\nAccuracy Score:", accuracy_score(y_test, y_pred))
+
+# Feature importance
+feature_importances = pd.DataFrame(model.feature_importances_, index=X.columns, columns=['Importance']).sort_values(by='Importance', ascending=False)
+print("\nFeature Importances:")
+print(feature_importances)
+
+# Save the trained model (optional)
+import joblib
+joblib.dump(model, 'customer_churn_model.pkl')
