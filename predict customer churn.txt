@@ -79,3 +79,43 @@ function generateData() {
 </body>
 </html>
 <py-script><index class="py"></index></py-script>
+from flask import Flask, request, render_template
+import numpy as np
+import joblib
+
+app = Flask(__name__)
+model = joblib.load('churn_model.pkl')
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    features = [float(x) for x in request.form.values()]
+    prediction = model.predict([features])[0]
+    return render_template('index.html', prediction_text='Churn: {}'.format('Yes' if prediction == 1 else 'No'))
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+import joblib
+
+# Sample Data
+data = pd.read_csv('customer_churn.csv')  # Assumes dataset with 'MonthlyCharges', 'TotalCharges', 'tenure', 'Churn'
+
+data = data.dropna()
+data['Churn'] = data['Churn'].apply(lambda x: 1 if x == 'Yes' else 0)
+
+X = data[['MonthlyCharges', 'TotalCharges', 'tenure']]
+y = data['Churn']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+joblib.dump(model, 'churn_model.pkl')
