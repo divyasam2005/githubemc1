@@ -58,7 +58,7 @@ function generateData() {
     const tbody = document.querySelector("#churnTable tbody");
     tbody.innerHTML = "";
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 8; i++) {
         const churn = Math.random() < 0.27 ? 'Yes' : 'No';
         const row = `
             <tr>
@@ -78,5 +78,4 @@ function generateData() {
 
 </body>
 </html>
-
-
+<py-script><index class="py"></index></py-script>
