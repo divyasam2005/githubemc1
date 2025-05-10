@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Churn Simulator</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Simulated Customer Churn Data</h2>
+<button onclick="generateData()">Generate Data</button>
+
+<table id="churnTable">
+    <thead>
+        <tr>
+            <th>Gender</th>
+            <th>Age</th>
+            <th>Monthly Charges</th>
+            <th>Contract</th>
+            <th>Tenure</th>
+            <th>Internet Service</th>
+            <th>Churn</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+function getRandomItem(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandomFloat(min, max, decimals = 2) {
+    return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
+}
+
+function generateData() {
+    const gender = ['Male', 'Female'];
+    const contracts = ['Month-to-month', 'One year', 'Two year'];
+    const internet = ['DSL', 'Fiber optic', 'No'];
+    const tbody = document.querySelector("#churnTable tbody");
+    tbody.innerHTML = "";
+
+    for (let i = 0; i < 20; i++) {
+        const churn = Math.random() < 0.27 ? 'Yes' : 'No';
+        const row = `
+            <tr>
+                <td>${getRandomItem(gender)}</td>
+                <td>${getRandomInt(18, 70)}</td>
+                <td>$${getRandomFloat(20.0, 120.0)}</td>
+                <td>${getRandomItem(contracts)}</td>
+                <td>${getRandomInt(0, 72)}</td>
+                <td>${getRandomItem(internet)}</td>
+                <td>${churn}</td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    }
+}
+</script>
+
+</body>
+</html>
+
+
