@@ -1,0 +1,13 @@
+Simulated Customer Churn Data
+
+Generate Data
+
+Gender	 Age   	Monthly Charges	   Contract  	Tenure 	Internet Service	 Churn
+Male	   60        $108.48 	         One year  	27         	No	          Yes
+Male	   28      	 $24.09	           Two year	  34	        DSL	          Yes
+Male	   29	       $26.41	           One year	  12	        DSL	          Yes
+Male	   32	       $87.33	           Two year	  58	      Fiber optic	    No
+Male	   56	       $57.99	           Two year	  33	        DSL	          Yes
+Female	 21	       $51.87	           Two year	  7	          No	          No
+Female	 48	       $69.8	       Month-to-month	4	          DSL	          No
+Male	   56	       $117.21	     One year	      3	          DSL	          No
